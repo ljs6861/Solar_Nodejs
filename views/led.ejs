@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<style media="screen">
+  body{
+    background-color: black;
+    color:white;
+    border: none;
+  }
+  #A{
+    background-color: white;
+    color: grey;
+    border: none;
+  }
+  #A:hover{
+    background-color: black;
+  }
+ 
+  #X{
+    background-color: grey;
+    color: white;
+    border: none;
+  }
+  #X:hover{
+    background-color: black;
+}
+
+</style>
+
+  
+  
+  
+  
+  
+  <!-- 
+
+ <script>
+  
+  
+
+  $(document).ready(function(){
+
+  	  $("button").click(function(){
+
+  	    $.get("/solar/getControl/" + $(this).attr('id'), function(data, status){ });
+
+  	        });
+
+   });
+  </script>
+  
+  
+ -->
+  
+  
+  
+  <script>
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.get("/led/" + $(this).attr('id'), function(data, status){ });
+        });
+    });
+    </script>
+
+
+<meta charset="UTF-8">
+
+
+  </head>
+  
+  
+  
+  <body>
+
+<div class="container">
+        <h2>Controll Test</h2>
+        <button type="button" class="btn btn-success" id='A'>모두 켜기</button>
+
+  
+        <button type="button" class="btn btn-default"  id='X'>모두 끄기</button>
+        </div>
+
+
+
+<!--   <button type="button" class="btn btn-warning" id='LED_ON'>ON</button>
+
+        <button type="button" class="btn btn-primary" id='LED_OFF'>OFF</button>
+-->
+
+
+  </body>
+  
+  
+  
+  
+
+</html>

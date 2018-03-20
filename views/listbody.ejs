@@ -1,0 +1,38 @@
+<table style="font-size: 17px"	class="w3-table ui-responsive" data-column-btn-text="칼럼선택" id="myTable">
+	<thead>
+		<tr>
+			<th data-priority="1">일자</th>
+			<th data-priority="2">시각</th>
+			<th data-priority="3">발전량</th>
+			<th data-priority="4">날씨</th>
+			<th data-priority="5">낮/밤</th>
+			<th data-priority="6">온도</th>
+
+			
+		</tr>
+	</thead>
+	<tbody>
+		<%  
+			//	시간을 시:분 으로 나누어 한개씩만 표시한다.
+			var t = ""
+			list.forEach(function(item){ 
+			if(t != item.solar_time.substr(0,5)) {
+		
+		%>
+		<tr>
+			
+			<td><%- item.solar_date %></td>
+			<td><%- item.solar_time %></td>
+			<td><%- item.solar_value %></td>
+		     <td><%- item.solar_weather %></td>
+		     <td><%- item.solar_no %></td>
+		      <td><%- item.solar_day %></td>
+		     
+		</tr>
+		<% 
+			}
+			t = item.solar_time.substr(0,5)
+		}) 
+		%>
+	</tbody>
+</table>

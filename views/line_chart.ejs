@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<% include include/mainHeader.ejs %>
+<style>
+.axis--x path {
+	/*display: none;*/
+}
+
+.line {
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 1.5px;
+}
+</style>
+<script src="http://d3js.org/d3.v4.js"></script>
+<script src='/js/chart_event.js'></script>
+<body>
+	<% include include/pageHeader.ejs %>
+	<article>
+		<section class="w3-container">
+			<section class='w3-col l3 s3 m3'>
+				<input type="date" class="w3-input w3-border w3-col l6 m6 s6 w3-margin" name="searchdate" id="searchdate">
+				<button class="w3-button w3-khaki w3-margin" id="searchBtn">
+				검색
+				</button>
+			</section>
+			<section class="w3-col l5 s3 m5 w3-light-gray">
+				<input type='checkbox' checked="checked" name='solar' id='solar_value' value='solar_value' class="w3-check w3-margin">
+				<label class='w3-large'>solar</label>
+
+			
+
+			</section>
+		</section>
+	</article>
+	<hr/>
+	<article class='w3-container w3-light-gray' id='chartArea'>
+		<svg width="1200" height="450"></svg>
+	</article>
+	<hr/>
+	<article id='msg'></article>
+	<footer class="w3-container w3-teal w3-center"> <% include
+		include/pageFooter.ejs %> </footer>
+
+</body>
+

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+
+
+<html>
+
+
+<head>
+<% include include/mainHeader.ejs %>
+
+
+<script>
+	$(document).ready(function() {
+		createGauges();
+		updateGauges();
+
+		setInterval(updateGauges, 3000);
+	})
+</script>
+
+
+
+
+
+
+
+</head>
+
+
+
+<body>
+
+
+	<!-- Header -->
+	<% include include/pageHeader.ejs %>
+
+
+	<article>
+		<div class="w3-row">
+
+			<button class="w3-button w3-block w3-light-grey"
+				style="font-size: 15px; font-weight: bold" id='curTime'>현재
+				발전량</button>
+
+			<span class="w3-col2 w3-left m3 l3 w3-margin-left"
+				id="solar_valueGaugeContainer"></span> <br /> <br /> <span
+				class="w3-col2  w3-margin-top"
+				style="margin-left: 100px; font-size: 70px; font-weight: bold"
+				id="display"></span> <span class="w3-col2  w3-margin-top"
+				style="font-size: 70px; font-weight: bold" id="display2"></span>
+
+
+			<!-- <button id="16" class="led">수동청소 ON</button> -->
+			<!-- button for pin 16 -->
+
+			<button
+				style="color: Royalblue; margin-left: 60px; font-size: 45px; font-weight: bold;"
+				id="12" class="clean">수동 청소</button>
+			<!-- button for pin 12 -->
+
+			<br /> <span
+				class="w3-col w3-right  m3 l8 w3-margin-right  w3-margin-top ">
+
+				<% include info_tview.ejs %> </span> <br />
+
+		</div>
+		<br /> <br />
+		<footer class="w3-container w3-teal w3-center"> <% include
+			include/pageFooter.ejs %> </footer>
+
+
+
+	</article>
+
+
+
+
+	<br />
+	<br />
+
+
+</body>
+
+
+
+<script>
+	var gauges = [];
+	var boolCreate = false;
+	function createGauge(name, label, min, max) {
+		var config = {
+			size : 450,
+			label : label,
+			min : undefined != min ? min : 0,
+			max : undefined != max ? max : 5,
+			minorTicks : 10
+
+		}
+
+		var range = config.max - config.min;
+
+		config.redZones = [ {
+			from : config.min + range * 0.0,
+			to : config.min + range * 0.33
+		} ];
+
+		config.yellowZones = [ {
+			from : config.min + range * 0.33,
+			to : config.min + range * 0.66
+		} ];
+
+		config.greenZones = [ {
+			from : config.min + range * 0.66,
+			to : config.min + range * 1.0
+		} ];
+
+		gauges[name] = new Gauge(name + "GaugeContainer", config);
+		gauges[name].render();
+
+	}
+
+	function createGauges() {
+		createGauge("solar_value", "발전량: v", 0, 5);
+
+		boolCreate = true;
+	}
+
+	// 게이지 다시그리기
+	function updateGauges() {
+		$.ajax({
+
+			type : 'GET',
+			url : '/solar/getlast',
+			dataType : 'json',
+			success : function(data) {
+				if (data) {
+					gauges['solar_value'].redraw(data.solar_value);
+
+					$(curTime).text(data.solar_date + ', ' + data.solar_time);
+
+					$(".solar_1").css("background-color", "white");
+					$(".solar_2").css("background-color", "white");
+					$(".solar_3").css("background-color", "white");
+					$(".solar_4").css("background-color", "white");
+					$(".solar_5").css("background-color", "white");
+
+					if (data.solar_value < 3.0)
+						$(".solar_1").css("background-color", "#b70000");
+					else if (data.solar_value < 3.5)
+						$(".solar_2").css("background-color", "#ff0000");
+					else if (data.solar_value < 4.0)
+						$(".solar_3").css("background-color", "#ed4c00");
+					else if (data.solar_value < 4.5)
+						$(".solar_4").css("background-color", "#ffbb00");
+					else if (data.solar_value <= 5.0)
+						$(".solar_5").css("background-color", "#33FF66");
+
+					$(display).text(" ※ 현재 발전량 - ");
+					$(display2).css("background-color", "black");
+
+					if (data.solar_value < 3.0)
+						$(display2).text(data.solar_value + " V").css("color",
+								"#b70000");
+
+					else if (data.solar_value < 3.5)
+						$(display2).text(data.solar_value + " V").css("color",
+								"#ff0000");
+
+					else if (data.solar_value < 4.0)
+						$(display2).text(data.solar_value + " V").css("color",
+								"#ed4c00");
+
+					else if (data.solar_value < 4.5)
+						$(display2).text(data.solar_value + " V").css("color",
+								"#ffbb00");
+
+					else if (data.solar_value <= 5.0)
+						$(display2).text(data.solar_value + " V").css("color",
+								"#33FF66");
+
+					/*
+					if (data.solar_value < 2.0)
+						 alert("청소시스템이 구동됩니다.",1000);
+					 */
+
+				}
+			}
+		})
+	}
+
+	$(document).ready(function() {
+		$(".clean").click(function() {
+			var p = $(this).attr('id'); // get id value (i.e. pin13, pin12, or pin11)
+			// send HTTP GET request to the IP address with the parameter "pin" and value "p", then execute the function
+			$.get("http://192.168.43.182:80/", {pin : p}); // execute get request  학원
+
+		});
+	});
+</script>
+<script src="/d3js/d3.min.js"></script>
+<script src="/d3js/gauge.js"></script>
+</html>
